@@ -22,7 +22,7 @@ const UpButton = styled.button`
     opacity: 0.1;
   }
 `;
-// Reuse characteristics and override whats needed to differs
+// Reuse characteristics and override whats needed to differ
 const LeftButton = styled(UpButton)`
    padding: 5px 7px;
 `;
