@@ -28,13 +28,6 @@ export function drawTiles(ctx, model) {
     let visits = 0;
     //console.log("numRows,numCols = " + numRows + ", " + numColumns)
 
-    // for(let i = 0; i < model.level.walls.length; i++) {
-    //     console.log("|-----------------------------------|")
-    //     //console.log("(r= " + r + "," + "c= " + c + ")")
-    //     console.log("(i= " + i + ")")
-    //     console.log("(Walls[r].row= " + model.level.walls[i].row + " | Walls[r].col= " + model.level.walls[i].column + ")")
-    //     console.log("|-----------------------------------|")
-    // }
         for(let r = 0; r < numRows; r++) {
             for(let c = 0; c < numColumns; c++) {
                 cell = model.board.cells[r][c]
@@ -60,7 +53,7 @@ export function drawTiles(ctx, model) {
                     ctx.rect(tile.x, tile.y, tile.size, tile.size)
                     ctx.stroke()
                 }
-                
+                /** DRAW WALLS */
                 model.level.walls.forEach(wall => {
                     //console.log("walls.row, walls.column, r, c === (" + wall.row + ", " + wall.column + ", " + r + ", " + c + ")")
                     
@@ -78,7 +71,7 @@ export function drawTiles(ctx, model) {
                         ctx.stroke()
                     }
                 })
-
+                /** DRAW DOORS */
                 model.level.doors.forEach(door => {
                     //console.log("walls.row, walls.column, r, c === (" + wall.row + ", " + wall.column + ", " + r + ", " + c + ")")
                     
@@ -92,7 +85,7 @@ export function drawTiles(ctx, model) {
                         ctx.stroke()
                     }
                 })
-
+                /** DRAW KEYS */
                 model.level.keys.forEach(key => {
                     //console.log("walls.row, walls.column, r, c === (" + wall.row + ", " + wall.column + ", " + r + ", " + c + ")")
                     
@@ -100,13 +93,14 @@ export function drawTiles(ctx, model) {
                         ctx.beginPath()
                         ctx.lineWidth = 4
                         let keyColor = String(key.color);
+                        //if(keyColor === "red"){}
                         ctx.fillStyle = keyColor
                         ctx.fillRect(tile.x, tile.y, tile.size, tile.size)
                         ctx.rect(tile.x, tile.y, tile.size, tile.size)
                         ctx.stroke()
                     }
                 })
-       }
+       5}
     }
 }
 
