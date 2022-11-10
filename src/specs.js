@@ -12,34 +12,59 @@ export const specs = {
 
     text : {
         position: "absolute",
-        left: 700,
+        left: 550,
         top: 100,
         color: "white",
+    },
+    
+    title : {
+        position: "absolute",
+        left: 555,
+        color: "purple",
+        fontSize: 48,
     },
 
  /** BUTTONS */   
     upButton : {
         position: "absolute",
-        left: 500,
+        left: 600,
         top: 210
     },
 
     downButton : {
         position: "absolute",
-        left: 500,
+        left: 600,
         top: 260
     },
 
     leftButton : {
         position: "absolute",
-        left: 465,
+        left: 565,
         top: 235
     },
 
     rightButton : {
         position: "absolute",
-        left: 535,
+        left: 635,
         top: 235
+    },
+
+    l1Button : {
+        position: "absolute",
+        left: 582,
+        top: 325
+    },
+
+    l2Button : {
+        position: "absolute",
+        left: 582,
+        top: 365
+    },
+
+    l3Button : {
+        position: "absolute",
+        left: 582,
+        top: 405
     },
 
     topNav : {

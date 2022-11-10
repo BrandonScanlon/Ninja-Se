@@ -1,3 +1,8 @@
+/**
+ * CAN WE HAVE AN 'UNLOCKED' PROPERTY IN THIS JSON?
+ * WHAT ABOUT A LEVEL STRING?
+ */
+
 export const level1 = {
     "rows" : 5,
     "columns" : 4,

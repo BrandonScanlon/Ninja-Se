@@ -6,6 +6,8 @@ import { Model } from './model/Model';
 import { redrawCanvas } from './boundary/Boundary';
 import styled from 'styled-components';
 import { specs } from './specs.js';
+import { Up, Down, Left, Right } from './model/Model.js';
+import { movePiece } from './controller/Controller.js';
 
 
 /**
@@ -13,10 +15,11 @@ import { specs } from './specs.js';
  * 
  * Install the following to run:
  * 
- *  - npm install react-router-dom
  *  - npm add styled-components
  *    or search for styled-components
  *    in VS Code plugins. 
+ * 
+ *  - npm install react-router-dom
  */
 
 /** Button Styling */
@@ -37,6 +40,7 @@ const UpButton = styled.button`
     opacity: 0.1;
   }
 `;
+
 // Reuse characteristics and override whats needed to differ
 const LeftButton = styled(UpButton)`
    padding: 5px 7px;
@@ -45,6 +49,12 @@ const RightButton = styled(UpButton)`
    padding: 5px 7px;
 `;
 const DownButton = styled(UpButton)`
+`;
+const L1Button = styled(UpButton)`
+`;
+const L2Button = styled(UpButton)`
+`;
+const L3Button = styled(UpButton)`
 `;
 
 function App() {
@@ -58,6 +68,27 @@ function App() {
       redrawCanvas(model, canvasRef.current, appRef.current)
   }, [model, redraw])
 
+  const movePieceHandler = (direction) => {
+    let newModel = movePiece(model, direction);
+    setModel(newModel);   // react to changes, if model has changed.
+  }
+
+  function LevelHandler(whichLevel){
+    const [model, setModel] = React.useState(new Model(whichLevel));
+  }
+
+  function whichLevel(){
+    if(model.level === level1){
+      return "Level 1"
+    }
+    if(model.level === level2){
+      return "Level 2"
+    }
+    if(model.level === level3){
+      return "Level 3"
+    }
+  }
+
   return (
     <main style={specs.Appmain} ref={appRef}>
       <canvas tabIndex="1"
@@ -65,20 +96,29 @@ function App() {
         ref={canvasRef}
         width = {specs.canvas.width}
         height = {specs.canvas.height} />
-
+      <label style={specs.title}>{whichLevel()}</label>
       <label style={specs.text}>{"Number of Moves: " + model.numMoves}</label>
       
       <div style={specs.upButton}>
-      <UpButton>    ↑ </UpButton>
+      <UpButton onClick={(e) => movePieceHandler(Up)} /**</div>disabled={!model.available(Up)}*/>    ↑ </UpButton>
       </div>
       <div style={specs.leftButton}>
-      <LeftButton>  ← </LeftButton>
+      <LeftButton onClick={(e) => movePieceHandler(Left)} /**disabled={!model.available(Left)}*/>  ← </LeftButton>
       </div>
       <div style={specs.downButton}>
-      <DownButton>  ↓ </DownButton>
+      <DownButton onClick={(e) => movePieceHandler(Down)} /**disabled={!model.available(Down)}*/>  ↓ </DownButton>
       </div>
       <div style={specs.rightButton}>
-      <RightButton> → </RightButton>
+      <RightButton onClick={(e) => movePieceHandler(Right)} /**disabled={!model.available(Right)}*/> → </RightButton>
+      </div>
+      <div style={specs.l1Button}>
+      <L1Button onClick={(e) => LevelHandler(level1)}>Level 1</L1Button>
+      </div>
+      <div style={specs.l2Button}>
+      <L2Button onClick={(e) => LevelHandler(level2)}>Level 2</L2Button>
+      </div>
+      <div style={specs.l3Button}>
+      <L3Button onClick={(e) => LevelHandler(level3)}>Level 3</L3Button>
       </div>
      
       <img id="Ninja-Se" src='./Ninja-Se.jpg' />
