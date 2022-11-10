@@ -1,8 +1,15 @@
 import { render, screen } from '@testing-library/react';
 import App from './App';
+import { level1 } from "./model/Levels";
+import { Model } from './model/Model';
+var model = new Model(level1);
 
-test('renders learn react link', () => {
-  render(<App />);
-  const linkElement = screen.getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
+test('Moves start at 0', () => {
+  expect(model.numMoves).toBe(0);
 });
+
+test('Properly renders 0 moves', () => {
+  const { getByText } = render(<App />);
+  const movesElement = getByText(/Number of Moves: /i);
+  expect(movesElement).toBeInTheDocument();
+})
