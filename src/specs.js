@@ -10,60 +10,64 @@ export const specs = {
         width: "100vw",
     },
 
-    text : {
-        position: "absolute",
-        left: 550,
-        top: 100,
-        color: "white",
-    },
-    
     title : {
         position: "absolute",
-        left: 555,
+        left: 600,
+        top: 10,
         color: "purple",
+        backgroundColor: "#0B0A0C",
         fontSize: 48,
     },
 
+    text : {
+        position: "absolute",
+        left: 530,
+        top: 100,
+        color: "purple",
+        backgroundColor: "#0B0A0C",
+        fontSize: 32,
+    },
+    
  /** BUTTONS */   
     upButton : {
         position: "absolute",
-        left: 600,
-        top: 210
+        left: 645,
+        top: 205
     },
 
     downButton : {
         position: "absolute",
-        left: 600,
-        top: 260
+        left: 645,
+        top: 265
     },
 
     leftButton : {
         position: "absolute",
-        left: 565,
+        left: 610,
         top: 235
     },
 
     rightButton : {
         position: "absolute",
-        left: 635,
+        left: 680,
         top: 235
     },
 
     l1Button : {
         position: "absolute",
-        left: 582,
+        left: 625,
         top: 325
     },
 
     l2Button : {
         position: "absolute",
-        left: 582,
+        left: 625,
         top: 365
     },
 
     l3Button : {
         position: "absolute",
-        left: 582,
+        left: 625,
         top: 405
     },
 

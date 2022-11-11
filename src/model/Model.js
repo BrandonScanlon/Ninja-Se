@@ -20,13 +20,13 @@ export const Left = new MoveType(0, -1, "left");
 export const Right = new MoveType(0, 1, "right");
 export const NoMove = new MoveType(0, 0, "*");  // no move is possible
 
-export class Cell {
+export class Coordinate {
     constructor(row, column) {
         this.row = row;
         this.column = column;
     }
 }
-export class Board {
+export class Tile {
     constructor(numRows, numColumns) {
         this.numRows = numRows;
         this.numColumns = numColumns;
@@ -35,13 +35,64 @@ export class Board {
         for(let r = 0; r < numRows; r++) {
             this.cells[r] = [];
             for(let c = 0; c < 5; c++) {
-                this.cells[r][c] = new Cell(r, c);
+                this.cells[r][c] = new Coordinate(r, c);
             }
         }
     }
+
+    place(row, col) {
+        this.row = row;
+        this.column = col;
+    }
+    
+    move(direction) {
+        this.row += direction.deltar;
+        this.column += direction.deltac;
+    }
+    
+    location() {
+        return new Coordinate(this.row, this.column);
+    }
+    
+    // return all coordinates for this piece
+    *coordinates() {
+        for (let r = 0; r < this.height; r++) {
+            for (let c = 0; c < this.width; c++) {
+                yield new Coordinate(this.row + r, this.column + c);
+            } 
+        }
+    }
+    
+    contains(coord) {
+        let cs = [...this.coordinates()];   // javascript one liner.... turn all of those yield into a list.
+        for (let c of cs) {
+            if (c.row === coord.row && c.column === coord.column) { 
+                return true; 
+            } 
+        }
+        
+        return false;
+    }
+    
+    // used for solving
+    copy() {
+        let p = new Tile(this.width, this.height, this.isWinner, this.label);
+        p.place(this.row, this.column);
+        return p;
+    }
+    clone() {
+        let copy = new Tile(this.numRows, this.numColumns);
+        copy.cells = [];
+        for (let c of this.cells) {
+            let dup = c.copy();
+            copy.cells.push(dup);
+        }
+        
+        return copy;
+    }
 }
 
-// Model knows the level (you need 3). Knows the board
+// Model knows the level (you need 3). Knows the Tile
 export class Model {
 
     constructor(level) {
@@ -50,11 +101,21 @@ export class Model {
         let numRows = level.rows;
         let numColumns = level.columns
         this.numMoves = 0;
-        this.board = new Board(numRows, numColumns);
+        this.Tile = new Tile(numRows, numColumns);
+        this.victory = false;
     }
 
     updateMoveCount(delta) {
         this.numMoves += delta;
+    }
+
+    copy() {
+        let m = new Model(this.level);                 
+        m.level = this.level.clone();
+        m.numRows = this.numRows;
+        m.numColumns = this.numColumns;
+        m.victory = this.victory;
+        return m;
     }
 
     // available(direction) {
@@ -71,14 +132,4 @@ export class Model {
     //     let allMoves = this.puzzle.availableMoves();
     //     return allMoves.includes(direction);
     // }
-
-    
-    whichLevel(currentLevel) {
-        let str = "";
-        if(currentLevel === this.level){
-            str = "Level 1";
-            return str;
-        }
-        
-  }
 }
