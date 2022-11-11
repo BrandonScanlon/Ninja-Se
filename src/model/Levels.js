@@ -6,7 +6,7 @@
 export const level1 = {
     "rows" : 5,
     "columns" : 4,
-    "ninjase" :  { "row":2, "column":0 },
+    "ninjase" :  { "row":2, "column":0 }, //2,0
     "walls" : [
       { "row":0, "column":3},
       { "row":1, "column":1},

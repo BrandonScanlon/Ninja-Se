@@ -43,7 +43,7 @@ export function drawTiles(ctx, model) {
 
         for(let r = 0; r < numRows; r++) {
             for(let c = 0; c < numColumns; c++) {
-                cell = model.Tile.cells[r][c]
+                cell = model.tile.cells[r][c]
                 tile = computeTile(cell)           
                 
                 /** DRAW ALL WHITE */
@@ -54,14 +54,7 @@ export function drawTiles(ctx, model) {
                 ctx.rect(tile.x, tile.y, tile.size, tile.size)
                 ctx.stroke()
 
-                /** DRAW NINJA-SE */
-                if(r === model.level.ninjase.row && c === model.level.ninjase.column){
-                    let image = new Image();
-                    image.src = ninjase;
-                    image.onload = function() {
-                    ctx.drawImage(image,(model.level.ninjase.column*100)+4, (model.level.ninjase.row*100)+4, 92, 92);
-                    }
-                }
+                
                 /** DRAW WALLS */
                 model.level.walls.forEach(wall => {
                     if(wall.row === r && wall.column === c){
@@ -153,6 +146,14 @@ export function drawTiles(ctx, model) {
                         ctx.stroke()
                     }
                 })
+                /** DRAW NINJA-SE */
+                if(r === model.level.ninjase.row && c === model.level.ninjase.column){
+                    let image = new Image();
+                    image.src = ninjase;
+                    image.onload = function() {
+                    ctx.drawImage(image,(model.level.ninjase.column*100)+4, (model.level.ninjase.row*100)+4, 92, 92);
+                    }
+                }
        }
     }
 }

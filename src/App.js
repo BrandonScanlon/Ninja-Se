@@ -102,16 +102,16 @@ function App() {
       <label style={specs.text}>{"Number of Moves: " + model.numMoves}</label>
       
       <div style={specs.upButton}>
-      <UpButton onClick={(e) => moveNinjaHandler(Up)} /**</div>disabled={!model.available(Up)}*/>    ↑ </UpButton>
+      <UpButton onClick={(e) => moveNinjaHandler(Up)} disabled={!model.available(Up)}>    ↑ </UpButton>
       </div>
       <div style={specs.leftButton}>
-      <LeftButton onClick={(e) => moveNinjaHandler(Left)} /**disabled={!model.available(Left)}*/>  ← </LeftButton>
+      <LeftButton onClick={(e) => moveNinjaHandler(Left)} disabled={!model.available(Left)}>  ← </LeftButton>
       </div>
       <div style={specs.downButton}>
-      <DownButton onClick={(e) => moveNinjaHandler(Down)} /**disabled={!model.available(Down)}*/>  ↓ </DownButton>
+      <DownButton onClick={(e) => moveNinjaHandler(Down)} disabled={!model.available(Down)}>  ↓ </DownButton>
       </div>
       <div style={specs.rightButton}>
-      <RightButton onClick={(e) => moveNinjaHandler(Right)} /**disabled={!model.available(Right)}*/> → </RightButton>
+      <RightButton onClick={(e) => moveNinjaHandler(Right)} disabled={!model.available(Right)}> → </RightButton>
       </div>
       <div style={specs.l1Button}>
       <L1Button onClick={(e) => LevelHandler(level1)}>Level 1</L1Button>

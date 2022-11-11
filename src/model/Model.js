@@ -45,9 +45,9 @@ export class Tile {
         this.column = col;
     }
     
-    move(direction) {
-        this.row += direction.deltar;
-        this.column += direction.deltac;
+    move(ninjase, direction) {
+        ninjase.row += direction.deltar;
+        ninjase.column += direction.deltac;
     }
     
     location() {
@@ -73,8 +73,112 @@ export class Tile {
         
         return false;
     }
+
+    /** Determines if any piece in the puzzle covers given coordinate. */
+    isCovered(coord) {
+        let idx = this.tile.findIndex(piece => piece.contains(coord));
+        
+        // if we found a piece that covers coordinate, return true; otherwise false.
+        return idx >= 0; 
+    }
     
-    // used for solving
+    availableMoves(level, ninjase) {
+        let moves = [];
+
+        // Can we move left?
+        let available = false;
+        let openDoor = false;
+        
+        
+        if(ninjase.column > 0) {
+            available = true;
+            for(let i = 0; i < level.doors.length; i++) {
+                let door = level.doors[i];
+                if(door.row === ninjase.row && door.column === ninjase.column - 1){
+                    available = false;
+                    openDoor = true;
+                }
+            }
+            for(let i = 0; i < level.walls.length; i++) {
+                let wall = level.walls[i];
+                if(wall.row === ninjase.row && wall.column === ninjase.column - 1){
+                    available = false;
+                }
+            }
+        }
+            if(available) {
+                moves.push(Left);
+             }
+        
+
+        // Can we move right?
+        available = false;
+        if(ninjase.column < this.numColumns) {
+            available = true;
+            for(let i = 0; i < level.doors.length; i++) {
+                let door = level.doors[i];
+                if(door.row === ninjase.row && door.column === ninjase.column + 1){
+                    available = false;
+                    openDoor = true;
+                }
+            }
+            for(let i = 0; i < level.walls.length; i++) {
+                let wall = level.walls[i];
+                if(wall.row === ninjase.row && wall.column === ninjase.column + 1){
+                    available = false;
+                }
+            }
+        }
+        if(available) {
+            moves.push(Right);
+        }
+
+        // Can we move up?
+        available = false;
+        if(ninjase.row > 0) {
+            available = true;
+            for(let i = 0; i < level.doors.length; i++) {
+                let door = level.doors[i];
+                if(door.row === ninjase.row - 1 && door.column === ninjase.column){
+                    available = false;
+                    openDoor = true;
+                }
+            }
+            for(let i = 0; i < level.walls.length; i++) {
+                let wall = level.walls[i];
+                if(wall.row === ninjase.row - 1 && wall.column === ninjase.column){
+                    available = false;
+                }
+            }
+        }
+        if(available) {
+            moves.push(Up);
+        }
+
+        // Can we move down?
+        available = false;
+        if(ninjase.row +1 < this.numRows) {
+            available = true;
+            for(let i = 0; i < level.doors.length; i++) {
+                let door = level.doors[i];
+                if(door.row === ninjase.row + 1 && door.column === ninjase.column){
+                    available = false;
+                    openDoor = true;
+                }
+            }
+            for(let i = 0; i < level.walls.length; i++) {
+                let wall = level.walls[i];
+                if(wall.row === ninjase.row + 1 && wall.column === ninjase.column){
+                    available = false;
+                }
+            }
+        }
+        if(available) {
+            moves.push(Down);
+        }
+        return moves;
+    }
+
     copy() {
         let p = new Tile(this.width, this.height, this.isWinner, this.label);
         p.place(this.row, this.column);
@@ -101,7 +205,7 @@ export class Model {
         let numRows = level.rows;
         let numColumns = level.columns
         this.numMoves = 0;
-        this.Tile = new Tile(numRows, numColumns);
+        this.tile = new Tile(numRows, numColumns);
         this.victory = false;
     }
 
@@ -118,18 +222,11 @@ export class Model {
         return m;
     }
 
-    // available(direction) {
-    //     // if no piece selected? Then none are available.
-    //     if (direction === NoMove) { return false; }
-        
-    //     // HANDLE WINNING CONDITION. MUST BE AVAILABLE!
-    //     if (this.puzzle.selected.row === this.puzzle.destination.row && 
-    //         this.puzzle.selected.column === this.puzzle.destination.column && 
-    //         this.puzzle.finalMove === direction) {
-    //         return true;
-    //     }
+    available(direction) {
+        if (direction === NoMove) { return false; }
 
-    //     let allMoves = this.puzzle.availableMoves();
-    //     return allMoves.includes(direction);
-    // }
+        let allMoves = this.tile.availableMoves(this.level, this.level.ninjase);
+        console.log(allMoves.includes(direction))
+        return allMoves.includes(direction);
+    }
 }
