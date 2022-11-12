@@ -45,9 +45,9 @@ export class Tile {
         this.column = col;
     }
     
-    move(ninjase, direction) {
-        ninjase.row += direction.deltar;
-        ninjase.column += direction.deltac;
+    move(direction) {
+        this.row += direction.deltar;
+        this.column += direction.deltac;
     }
     
     location() {
@@ -186,12 +186,6 @@ export class Tile {
     }
     clone() {
         let copy = new Tile(this.numRows, this.numColumns);
-        copy.cells = [];
-        for (let c of this.cells) {
-            let dup = c.copy();
-            copy.cells.push(dup);
-        }
-        
         return copy;
     }
 }
@@ -215,7 +209,7 @@ export class Model {
 
     copy() {
         let m = new Model(this.level);                 
-        m.level = this.level.clone();
+        m.tile = this.tile.clone();
         m.numRows = this.numRows;
         m.numColumns = this.numColumns;
         m.victory = this.victory;
@@ -224,9 +218,11 @@ export class Model {
 
     available(direction) {
         if (direction === NoMove) { return false; }
-
         let allMoves = this.tile.availableMoves(this.level, this.level.ninjase);
-        console.log(allMoves.includes(direction))
         return allMoves.includes(direction);
+    }
+    move(direction) {
+        this.row += direction.deltar;
+        this.column += direction.deltac;
     }
 }

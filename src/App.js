@@ -30,7 +30,7 @@ const UpButton = styled.button`
   border-radius: 10px;
   outline: 1;
   cursor: pointer;
-  box-shadow: 0px 2px 4px lightgray;
+  box-shadow: 0px 2px 4px black;
   transition: ease background-color 250ms;
   &:hover {
     opacity: 0.5;

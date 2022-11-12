@@ -20,7 +20,7 @@ var BOXSIZE = 100;
 const OFFSET = 4;
 
 /** Represents a Tile. */
-export class Tile {
+export class Square {
     constructor(x, y, size) {
         this.x = x;
         this.y = y;
@@ -29,7 +29,7 @@ export class Tile {
 }
 
 export function computeTile(cell) {
-    return new Tile(BOXSIZE*cell.column + OFFSET,
+    return new Square(BOXSIZE*cell.column + OFFSET,
                     BOXSIZE*cell.row + OFFSET,
                     BOXSIZE - 2*OFFSET,
                     BOXSIZE - 2*OFFSET);
