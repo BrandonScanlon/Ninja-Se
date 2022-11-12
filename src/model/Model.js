@@ -1,25 +1,3 @@
-export class MoveType {
-    constructor(dr, dc) {
-        this.deltar = dr;
-        this.deltac = dc;
-    }
-    
-    static parse(s) {
-        if ((s === "down")  || (s === "Down"))   { return Down; }
-        if ((s === "up")    || (s === "Up"))     { return Up; }
-        if ((s === "left")  || (s === "Left"))   { return Left; }
-        if ((s === "right") || (s === "Right"))  { return Right; }
-        
-        return NoMove;
-    }
-}
-
-export const Down = new MoveType(1, 0, "down");
-export const Up = new MoveType(-1, 0, "up");
-export const Left = new MoveType(0, -1, "left");
-export const Right = new MoveType(0, 1, "right");
-export const NoMove = new MoveType(0, 0, "*");  // no move is possible
-
 export class Coordinate {
     constructor(row, column) {
         this.row = row;
@@ -107,7 +85,7 @@ export class Tile {
             }
         }
             if(available) {
-                moves.push(Left);
+                moves.push("Left");
              }
         
 
@@ -130,7 +108,7 @@ export class Tile {
             }
         }
         if(available) {
-            moves.push(Right);
+            moves.push("Right");
         }
 
         // Can we move up?
@@ -152,7 +130,7 @@ export class Tile {
             }
         }
         if(available) {
-            moves.push(Up);
+            moves.push("Up");
         }
 
         // Can we move down?
@@ -174,7 +152,7 @@ export class Tile {
             }
         }
         if(available) {
-            moves.push(Down);
+            moves.push("Down");
         }
         return moves;
     }
@@ -203,8 +181,8 @@ export class Model {
         this.victory = false;
     }
 
-    updateMoveCount(delta) {
-        this.numMoves += delta;
+    updateMoveCount() {
+        this.numMoves += 1;
     }
 
     copy() {
@@ -212,17 +190,13 @@ export class Model {
         m.tile = this.tile.clone();
         m.numRows = this.numRows;
         m.numColumns = this.numColumns;
+        m.numMoves = this.numMoves;
         m.victory = this.victory;
         return m;
     }
 
     available(direction) {
-        if (direction === NoMove) { return false; }
         let allMoves = this.tile.availableMoves(this.level, this.level.ninjase);
         return allMoves.includes(direction);
-    }
-    move(direction) {
-        this.row += direction.deltar;
-        this.column += direction.deltac;
     }
 }

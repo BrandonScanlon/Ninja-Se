@@ -6,7 +6,6 @@ import { Model } from './model/Model';
 import { redrawCanvas } from './boundary/Boundary';
 import styled from 'styled-components';
 import { specs } from './specs.js';
-import { Up, Down, Left, Right } from './model/Model.js';
 import { moveNinja } from './controller/Controller.js';
 
 
@@ -17,9 +16,11 @@ import { moveNinja } from './controller/Controller.js';
  * 
  *  - npm add styled-components
  *    or search for styled-components
- *    in VS Code plugins. 
+ *    in the VS Code plugins. 
  * 
  *  - npm install react-router-dom
+ * 
+ *  - npm start (of course)
  */
 
 /** Button Styling */
@@ -71,15 +72,21 @@ function App() {
 
   const moveNinjaHandler = (direction) => {
     let newModel = moveNinja(model, direction);
+    model.numMoves +=1;
     setModel(newModel);   // react to changes, if model has changed.
   }
 
-  function LevelHandler (whichLevel) {
-    setModel(new Model(whichLevel))
+  function LevelHandler (ninjaRow, ninjaColumn, whichLevel) {
+    let newModel = new Model(whichLevel)
+
+    console.log(ninjaRow + ", " +  ninjaColumn);
+    console.log(newModel.level.ninjase.row + ", " + newModel.level.ninjase.column)
+    newModel.level.ninjase.row = ninjaRow;
+    newModel.level.ninjase.column = ninjaColumn;
+    setModel(newModel)
   }
 
   function TextLevel(){
-    //console.log(model.level)
     if(model.level === level1){
       return "Level 1"
     }
@@ -98,29 +105,30 @@ function App() {
         ref={canvasRef}
         width = {specs.canvas.width}
         height = {specs.canvas.height} />
+
       <label style={specs.title}>{TextLevel()}</label>
       <label style={specs.text}>{"Number of Moves: " + model.numMoves}</label>
       
       <div style={specs.upButton}>
-      <UpButton onClick={(e) => moveNinjaHandler(Up)} disabled={!model.available(Up)}>    ↑ </UpButton>
+      <UpButton onClick={(e) => moveNinjaHandler("Up")} disabled={!model.available("Up")}>    ↑ </UpButton>
       </div>
       <div style={specs.leftButton}>
-      <LeftButton onClick={(e) => moveNinjaHandler(Left)} disabled={!model.available(Left)}>  ← </LeftButton>
+      <LeftButton onClick={(e) => moveNinjaHandler("Left")} disabled={!model.available("Left")}>  ← </LeftButton>
       </div>
       <div style={specs.downButton}>
-      <DownButton onClick={(e) => moveNinjaHandler(Down)} disabled={!model.available(Down)}>  ↓ </DownButton>
+      <DownButton onClick={(e) => moveNinjaHandler("Down")} disabled={!model.available("Down")}>  ↓ </DownButton>
       </div>
       <div style={specs.rightButton}>
-      <RightButton onClick={(e) => moveNinjaHandler(Right)} disabled={!model.available(Right)}> → </RightButton>
+      <RightButton onClick={(e) => moveNinjaHandler("Right")} disabled={!model.available("Right")}> → </RightButton>
       </div>
       <div style={specs.l1Button}>
-      <L1Button onClick={(e) => LevelHandler(level1)}>Level 1</L1Button>
+      <L1Button onClick={(e) => LevelHandler(model.level.ninjase.row, model.level.ninjase.column, level1)}>Level 1</L1Button>
       </div>
       <div style={specs.l2Button}>
-      <L2Button onClick={(e) => LevelHandler(level2)}>Level 2</L2Button>
+      <L2Button onClick={(e) => LevelHandler(model.level.ninjase.row, model.level.ninjase.column, level2)}>Level 2</L2Button>
       </div>
       <div style={specs.l3Button}>
-      <L3Button onClick={(e) => LevelHandler(level3)}>Level 3</L3Button>
+      <L3Button onClick={(e) => LevelHandler(model.level.ninjase.row, model.level.ninjase.column, level3)}>Level 3</L3Button>
       </div>
     </main>
   );
