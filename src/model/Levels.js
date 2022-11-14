@@ -6,6 +6,7 @@
 export const level1 = {
     "rows" : 5,
     "columns" : 4,
+    "start" : { "row":2, "column":0 },
     "ninjase" :  { "row":2, "column":0 }, //2,0
     "walls" : [
       { "row":0, "column":3},
@@ -30,6 +31,7 @@ export const level1 = {
   export const level2 = {
     "rows" : 3,
     "columns" : 4,
+    "start" : { "row":1, "column":0 },
     "ninjase" :  { "row":1, "column":0 },
     "walls" : [],
     "doors" : [
@@ -51,6 +53,7 @@ export const level1 = {
   export const level3 = {
     "rows" : 2,
     "columns" : 5,
+    "start" : { "row":0, "column":0 },
     "ninjase" :  { "row":0, "column":0 },
     "walls" : [ { "row":1, "column":0 } ],
     "doors" : [

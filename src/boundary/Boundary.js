@@ -13,7 +13,7 @@ import redSe from '../images/Red-Se.jpg';
 import greenSe from '../images/Green-Se.jpg';
 import yellowSe from '../images/Yellow-Se.jpg';
 
-//redraw the Tile so I can see it
+
 
 //Scaling constants for Canvas
 var BOXSIZE = 100;
@@ -39,7 +39,7 @@ export function drawTiles(ctx, model) {
     let numRows = model.level.rows;
     let numColumns = model.level.columns;
     let cell = null;
-    let tile = null;  
+    let tile = null;
 
         for(let r = 0; r < numRows; r++) {
             for(let c = 0; c < numColumns; c++) {
@@ -54,7 +54,6 @@ export function drawTiles(ctx, model) {
                 ctx.rect(tile.x, tile.y, tile.size, tile.size)
                 ctx.stroke()
 
-                
                 /** DRAW WALLS */
                 model.level.walls.forEach(wall => {
                     if(wall.row === r && wall.column === c){
@@ -71,30 +70,31 @@ export function drawTiles(ctx, model) {
                     if(door.row === r && door.column === c){
                         const doorWidth = 97;
                         const doorHeight = 97;
-                        if(door.color === "red") {
-                            let image = new Image();
+                        let image = new Image();
+                        if(door.color === "red" && model.doorList.includes(door.color)) {
+                            model.doorList.push(door.color);
                             image.src = redDoor;
                             image.onload = function() {
                             ctx.drawImage(image, door.column*100, door.row*100, doorWidth, doorHeight);
                             }
                         
                         }
-                        if(door.color === "green") {
-                            let image = new Image();
+                        if(door.color === "green" && model.doorList.includes(door.color)) {
+                            model.doorList.push(door.color);
                             image.src = greenDoor;
                             image.onload = function() {
                             ctx.drawImage(image, door.column*100, door.row*100, doorWidth, doorHeight);
                             }
                         }
-                        if(door.color === "blue") {
-                            let image = new Image();
+                        if(door.color === "blue" && model.doorList.includes(door.color)) {
+                            model.doorList.push(door.color);
                             image.src = blueDoor;
                             image.onload = function() {
                             ctx.drawImage(image, door.column*100, door.row*100, doorWidth, doorHeight);
                             }
                         }
-                        if(door.color === "yellow") {
-                            let image = new Image();
+                        if(door.color === "yellow" && model.doorList.includes(door.color)) {
+                            model.doorList.push(door.color);
                             image.src = yellowDoor;
                             image.onload = function() {
                             ctx.drawImage(image, door.column*100, door.row*100, doorWidth, doorHeight);
@@ -103,63 +103,101 @@ export function drawTiles(ctx, model) {
                     }
                 })
                 /** DRAW KEYS */
-                model.level.keys.forEach(key => {
-                    if(key.row === r && key.column === c){
-                        if(key.color === "red") {
-                            let image = new Image();
+                for(let i = 0; i < model.keyList.length; i++){
+                    if(model.keyList[i].row === r && model.keyList[i].column === c){
+                        let image = new Image();
+                        if(model.keyList[i].color === "red") {
                             image.src = redKey;
                             image.onload = function() {
-                            ctx.drawImage(image,(key.column*100)+4, (key.row*100)+4, 92, 92);
+                            ctx.drawImage(image,(model.keyList[i].column*100)+4, (model.keyList[i].row*100)+4, 92, 92);
                             }
-                        }
-                        if(key.color === "green") {
-                            let image = new Image();
+                        } else if(model.keyList[i].color === "green") {
                             image.src = greenKey;
                             image.onload = function() {
-                            ctx.drawImage(image,(key.column*100)+4, (key.row*100)+4, 92, 92);
+                            ctx.drawImage(image,(model.keyList[i].column*100)+4, (model.keyList[i].row*100)+4, 92, 92);
                             }
-                        }
-                        if(key.color === "blue") {
-                            let image = new Image();
+                        } else if(model.keyList[i].color === "blue") {
                             image.src = blueKey;
                             image.onload = function() {
-                            ctx.drawImage(image,(key.column*100)+4, (key.row*100)+4, 92, 92);
+                            ctx.drawImage(image,(model.keyList[i].column*100)+4, (model.keyList[i].row*100)+4, 92, 92);
                             }
-                        }
-                        if(key.color === "yellow") {
-                            let image = new Image();
+                        } else if(model.keyList[i].color === "yellow") {
                             image.src = yellowKey;
                             image.onload = function() {
-                            ctx.drawImage(image,(key.column*100)+4, (key.row*100)+4, 92, 92);
+                            ctx.drawImage(image,(model.keyList[i].column*100)+4, (model.keyList[i].row*100)+4, 92, 92);
                             }
-                        }
-                        
-                        
-                        
-                        ctx.beginPath()
-                        ctx.lineWidth = 4
-                        let keyColor = String(key.color);
-                        //if(keyColor === "red"){}...
-                        ctx.fillStyle = keyColor
-                        ctx.fillRect(tile.x, tile.y, tile.size, tile.size)
-                        ctx.rect(tile.x, tile.y, tile.size, tile.size)
-                        ctx.stroke()
+                        } 
                     }
-                })
+                }
+                  /** DRAW DOORS */
+                for(let i = 0; i < model.keyList.length; i++){
+                    if(model.doorList[i].row === r && model.doorList[i].column === c){
+                        let image = new Image();
+                        if(model.doorList[i].color === "red") {
+                            image.src = redDoor;
+                            image.onload = function() {
+                            ctx.drawImage(image,(model.doorList[i].column*100)+4, (model.doorList[i].row*100)+4, 92, 92);
+                            }
+                        } else if(model.doorList[i].color === "green") {
+                            image.src = greenDoor;
+                            image.onload = function() {
+                            ctx.drawImage(image,(model.doorList[i].column*100)+4, (model.doorList[i].row*100)+4, 92, 92);
+                            }
+                        } else if(model.doorList[i].color === "blue") {
+                            image.src = blueDoor;
+                            image.onload = function() {
+                            ctx.drawImage(image,(model.doorList[i].column*100)+4, (model.doorList[i].row*100)+4, 92, 92);
+                            }
+                        } else if(model.doorList[i].color === "yellow") {
+                            image.src = yellowDoor;
+                            image.onload = function() {
+                            ctx.drawImage(image,(model.doorList[i].column*100)+4, (model.doorList[i].row*100)+4, 92, 92);
+                            }
+                        } 
+                    }    
+                }
                 /** DRAW NINJA-SE */
-                if(r === model.level.ninjase.row && c === model.level.ninjase.column){
+                if(model.currentKey === 'red') {
+                    let image = new Image();
+                    image.src = redSe;
+                    image.onload = function() {
+                    ctx.drawImage(image,(model.level.ninjase.column*100)+4, (model.level.ninjase.row*100)+4, 92, 92);
+                    }
+                } else if(model.currentKey === 'green') {
+                    let image = new Image();
+                    image.src = greenSe;
+                    image.onload = function() {
+                    ctx.drawImage(image,(model.level.ninjase.column*100)+4, (model.level.ninjase.row*100)+4, 92, 92);
+                    }
+                } else if(model.currentKey === 'blue') {
+                    let image = new Image();
+                    image.src = blueSe;
+                    image.onload = function() {
+                    ctx.drawImage(image,(model.level.ninjase.column*100)+4, (model.level.ninjase.row*100)+4, 92, 92);
+                    }
+                } else if(model.currentKey === 'yellow') {
+                    let image = new Image();
+                    image.src = yellowSe;
+                    image.onload = function() {
+                    ctx.drawImage(image,(model.level.ninjase.column*100)+4, (model.level.ninjase.row*100)+4, 92, 92);
+                    }
+                } else if(r === model.level.ninjase.row && c === model.level.ninjase.column && model.currentKey === null) {
                     let image = new Image();
                     image.src = ninjase;
                     image.onload = function() {
                     ctx.drawImage(image,(model.level.ninjase.column*100)+4, (model.level.ninjase.row*100)+4, 92, 92);
                     }
                 }
+            }        
        }
-    }
+}
+
+export function updateTiles(ctx, model) {
+
 }
 
 /** Redraw entire canvas from moddel/ */
-export function redrawCanvas(model, canvasObj, appObj) {
+export function redrawCanvas(model, canvasObj, appObj, key) {
     const ctx = canvasObj.getContext('2d');
     if(ctx === null){ return; } //Testing purposes
   
@@ -167,6 +205,6 @@ export function redrawCanvas(model, canvasObj, appObj) {
 
     if(model.level) {
         //Showing outermost information
-        drawTiles(ctx, model);    
+        drawTiles(ctx, model, model.keyList, model.doorList);    
     }
 }

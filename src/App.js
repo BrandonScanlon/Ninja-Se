@@ -6,7 +6,7 @@ import { Model } from './model/Model';
 import { redrawCanvas } from './boundary/Boundary';
 import styled from 'styled-components';
 import { specs } from './specs.js';
-import { moveNinja } from './controller/Controller.js';
+import { moveNinja, resetLevel, pickupKey, unlockDoor } from './controller/Controller.js';
 
 
 /**
@@ -57,6 +57,10 @@ const L2Button = styled(UpButton)`
 `;
 const L3Button = styled(UpButton)`
 `;
+const KeyButton = styled(UpButton)`
+`;
+const DoorButton = styled(UpButton)`
+`;
 
 function App() {
   const [model, setModel] = React.useState(new Model(level1))
@@ -76,13 +80,18 @@ function App() {
     setModel(newModel);   // react to changes, if model has changed.
   }
 
-  function LevelHandler (ninjaRow, ninjaColumn, whichLevel) {
-    let newModel = new Model(whichLevel)
+  function LevelHandler (level) {
+    let newModel = resetLevel(level)
+    setModel(newModel)
+  }
 
-    console.log(ninjaRow + ", " +  ninjaColumn);
-    console.log(newModel.level.ninjase.row + ", " + newModel.level.ninjase.column)
-    newModel.level.ninjase.row = ninjaRow;
-    newModel.level.ninjase.column = ninjaColumn;
+  function KeyHandler (model) {
+    let newModel = pickupKey(model);
+    setModel(newModel)
+  }
+
+  function DoorHandler (model) {
+    let newModel = unlockDoor(model);
     setModel(newModel)
   }
 
@@ -122,13 +131,19 @@ function App() {
       <RightButton onClick={(e) => moveNinjaHandler("Right")} disabled={!model.available("Right")}> → </RightButton>
       </div>
       <div style={specs.l1Button}>
-      <L1Button onClick={(e) => LevelHandler(model.level.ninjase.row, model.level.ninjase.column, level1)}>Level 1</L1Button>
+      <L1Button onClick={(e) => LevelHandler(level1)}>Level 1</L1Button>
       </div>
       <div style={specs.l2Button}>
-      <L2Button onClick={(e) => LevelHandler(model.level.ninjase.row, model.level.ninjase.column, level2)}>Level 2</L2Button>
+      <L2Button onClick={(e) => LevelHandler(level2)}>Level 2</L2Button>
       </div>
       <div style={specs.l3Button}>
-      <L3Button onClick={(e) => LevelHandler(model.level.ninjase.row, model.level.ninjase.column, level3)}>Level 3</L3Button>
+      <L3Button onClick={(e) => LevelHandler(level3)}>Level 3</L3Button>
+      </div>
+      <div style={specs.keyButton}>
+      <KeyButton onClick={(e) => KeyHandler(model)} disabled={!model.availableKey()}>Pickup Key</KeyButton>
+      </div>
+      <div style={specs.doorButton}>
+      <DoorButton onClick={(e) => DoorHandler(model)} disabled={!model.availableDoor()}>Unlock Door</DoorButton>
       </div>
     </main>
   );

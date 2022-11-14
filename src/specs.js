@@ -40,38 +40,39 @@ export const specs = {
         left: 645,
         top: 265
     },
-
     leftButton : {
         position: "absolute",
         left: 610,
         top: 235
     },
-
     rightButton : {
         position: "absolute",
         left: 680,
         top: 235
     },
-
     l1Button : {
         position: "absolute",
-        left: 625,
-        top: 325
+        left: 50,
+        top: 525
     },
-
     l2Button : {
         position: "absolute",
-        left: 625,
-        top: 365
+        left: 150,
+        top: 525
     },
-
     l3Button : {
         position: "absolute",
-        left: 625,
-        top: 405
+        left: 250,
+        top: 525
     },
-
-    topNav : {
-        backgroundColor: "#00ff00",
+    keyButton : {
+        position: "absolute",
+        left: 617,
+        top: 325
+    },
+    doorButton : {
+        position: "absolute",
+        left: 615,
+        top: 375
     },
 }

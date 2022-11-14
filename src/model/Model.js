@@ -157,6 +157,34 @@ export class Tile {
         return moves;
     }
 
+    onKey(level) {
+        let onAKey = false;
+        level.keys.forEach(key => {
+            if(level.ninjase.row === key.row &&  level.ninjase.column === key.column){
+                onAKey = true;
+            }
+        })
+        return onAKey;
+    }
+
+    nearDoor(level, currentKey) {
+        let nearDoor = false;
+        level.doors.forEach(door => {
+            if(door.color === currentKey){
+                if(level.ninjase.row === (door.row+1) &&  level.ninjase.column === door.column){ /** UP */
+                    nearDoor = true;
+                } else if(level.ninjase.row === (door.row-1) &&  level.ninjase.column === door.column){ /** DOWN */   
+                    nearDoor = true;
+                } else if(level.ninjase.row === door.row && level.ninjase.column === (door.column+1)){ /** LEFT */
+                    nearDoor = true;
+                } else if(level.ninjase.row === door.row && level.ninjase.column === (door.column-1)){ /** RIGHT */
+                    nearDoor = true;
+                }
+            }
+        })
+        return nearDoor;
+    }
+
     copy() {
         let p = new Tile(this.width, this.height, this.isWinner, this.label);
         p.place(this.row, this.column);
@@ -168,17 +196,64 @@ export class Tile {
     }
 }
 
+export class NinjaSe {
+    constructor(level){
+       this.initialize(level);
+    }
+    initialize(level){
+        this.startingRow = level.ninjase.row;
+        this.startingColumn = level.ninjase.column;
+    }
+}
+
+export class Key {
+    constructor(row, column, color) {
+        this.initialize(row, column, color);
+    }
+    initialize(row, column, color) {
+        this.row = row;
+        this.column = column;
+        this.color = color;
+    }
+}
+
+export class Door {
+    constructor(row, column, color) {
+        this.initialize(row, column, color);
+    }
+    initialize(row, column, color) {
+        this.row = row;
+        this.column = column;
+        this.color = color;
+        this.unlocked = false;
+    }
+}
+
 // Model knows the level (you need 3). Knows the Tile
 export class Model {
-
     constructor(level) {
+        this.initialize(level);
         this.level = level;
+    }
 
+    initialize(level) {
         let numRows = level.rows;
         let numColumns = level.columns
         this.numMoves = 0;
         this.tile = new Tile(numRows, numColumns);
         this.victory = false;
+        this.keyList = [];
+        this.doorList = [];
+        this.currentKey = null;
+        this.startRow = level.start.row;
+        this.startColumn = level.start.column;
+        level.keys.forEach(key => {
+            this.keyList.push(new Key(key.row, key.column, key.color));
+        })
+        level.doors.forEach(door => {
+            this.doorList.push(new Door(door.row, door.column, door.color));
+        })
+        
     }
 
     updateMoveCount() {
@@ -187,16 +262,33 @@ export class Model {
 
     copy() {
         let m = new Model(this.level);                 
-        m.tile = this.tile.clone();
         m.numRows = this.numRows;
         m.numColumns = this.numColumns;
         m.numMoves = this.numMoves;
+        m.tile = this.tile.clone();
         m.victory = this.victory;
+        m.keyList = this.keyList;
+        m.doorList = this.doorList;
+        m.currentKey = this.currentKey;
+        m.startRow = this.startRow;
+        m.startColumn = this.startColumn;
         return m;
     }
 
     available(direction) {
         let allMoves = this.tile.availableMoves(this.level, this.level.ninjase);
         return allMoves.includes(direction);
+    }
+
+    availableKey() {
+        let onKey = this.tile.onKey(this.level);
+        return onKey;
+                
+    }
+
+    availableDoor(currentKey) {
+        let nearDoor = this.tile.nearDoor(this.level, this.currentKey);
+        //console.log("nearDoor: " + nearDoor)
+        return nearDoor;
     }
 }
