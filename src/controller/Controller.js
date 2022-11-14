@@ -1,5 +1,4 @@
 import { Model } from "../model/Model";
-import { drawTiles } from '../boundary/Boundary.js';
 
 export function moveNinja(model, direction) {
     let ninjase = model.level.ninjase;
@@ -47,19 +46,40 @@ export function resetLevel(level) {
 
 export function unlockDoor(model) {
     model.doorList.forEach(door => {
-        if(model.availableDoor()){
             const index = model.doorList.findIndex(door => {
-                return door.color === model.currentKey;
+                if(model.level.ninjase.row === door.row -1  && model.level.ninjase.column === door.column){
+                    return door.color === model.currentKey;
+                } else if(model.level.ninjase.row === door.row + 1 && model.level.ninjase.column === door.column){
+                    return door.color === model.currentKey;
+                } else if(model.level.ninjase.row === door.row && model.level.ninjase.column === door.column +1){
+                    return door.color === model.currentKey;
+                } else if(model.level.ninjase.row === door.row && model.level.ninjase.column === door.column -1){
+                    return door.color === model.currentKey;
+                }
             })
+            // const idx = model.doorList.findIndex(function (doorList) {
+            //     return model.doorList.color === model.currentKey && door.row === model.level.ninjase.row && door.column === model.level.ninjase.column;
+            // })
             if(index > -1){
-                model.doorList.splice(index, 1);
+                if(model.level.ninjase.row === door.row -1  && model.level.ninjase.column === door.column){
+                    model.doorList.splice(index, 1);
+                    model.currentKey = null;
+                } else if(model.level.ninjase.row === door.row + 1 && model.level.ninjase.column === door.column){
+                    model.doorList.splice(index, 1);
+                    model.currentKey = null;
+                } else if(model.level.ninjase.row === door.row && model.level.ninjase.column === door.column +1){
+                    model.doorList.splice(index, 1);
+                    model.currentKey = null;
+                } else if(model.level.ninjase.row === door.row && model.level.ninjase.column === door.column -1){
+                    model.doorList.splice(index, 1);
+                    model.currentKey = null;
+                }
             }
-            model.currentKey = null;
-        }
     })
-    console.log(model.doorList)
-    if(model.doorList === null){
-        alert("Victory");
+    if(model.doorList.length === 0){
+        alert("You have sucessfully completed the level!")
+        model.doorList.push("Victory");
     }
+    model.availableDoor();
     return model.copy(); //time to redraw
 }

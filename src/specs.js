@@ -15,7 +15,7 @@ export const specs = {
         left: 600,
         top: 10,
         color: "purple",
-        backgroundColor: "#0B0A0C",
+        backgroundColor: "#1B1A1D",
         fontSize: 48,
     },
 
@@ -24,8 +24,16 @@ export const specs = {
         left: 530,
         top: 100,
         color: "purple",
-        backgroundColor: "#0B0A0C",
+        backgroundColor: "#1B1A1D",
         fontSize: 32,
+    },
+    reset : {
+        position: "absolute",
+        left: 65,
+        top: 522,
+        color: "purple",
+        backgroundColor: "#1B1A1D",
+        fontSize: 22,
     },
     
  /** BUTTONS */   
@@ -53,17 +61,17 @@ export const specs = {
     l1Button : {
         position: "absolute",
         left: 50,
-        top: 525
+        top: 565
     },
     l2Button : {
         position: "absolute",
         left: 150,
-        top: 525
+        top: 565
     },
     l3Button : {
         position: "absolute",
         left: 250,
-        top: 525
+        top: 565
     },
     keyButton : {
         position: "absolute",

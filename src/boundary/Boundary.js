@@ -66,7 +66,7 @@ export function drawTiles(ctx, model) {
                     }
                 })
                 /** DRAW DOORS */
-                model.level.doors.forEach(door => {
+                model.doorList.forEach(door => {
                     if(door.row === r && door.column === c){
                         const doorWidth = 97;
                         const doorHeight = 97;
@@ -102,6 +102,34 @@ export function drawTiles(ctx, model) {
                         }
                     }
                 })
+                  /** DRAW DOORS */
+                  model.doorList.forEach(door => {
+                    if(door.row === r && door.column === c){
+                        let image = new Image();
+                        if(door.color === "red") {
+                            image.src = redDoor;
+                            image.onload = function() {
+                            ctx.drawImage(image,(door.column*100)+4, (door.row*100)+4, 92, 92);
+                            }
+                        } else if(door.color === "green") {
+                            image.src = greenDoor;
+                            image.onload = function() {
+                            ctx.drawImage(image,(door.column*100)+4, (door.row*100)+4, 92, 92);
+                            }
+                        } else if(door.color === "blue") {
+                            image.src = blueDoor;
+                            image.onload = function() {
+                            ctx.drawImage(image,(door.column*100)+4, (door.row*100)+4, 92, 92);
+                            }
+                        } else if(door.color === "yellow") {
+                            image.src = yellowDoor;
+                            image.onload = function() {
+                            ctx.drawImage(image,(door.column*100)+4, (door.row*100)+4, 92, 92);
+                            }
+                        } 
+                    }    
+                  })
+                    
                 /** DRAW KEYS */
                 for(let i = 0; i < model.keyList.length; i++){
                     if(model.keyList[i].row === r && model.keyList[i].column === c){
@@ -128,33 +156,6 @@ export function drawTiles(ctx, model) {
                             }
                         } 
                     }
-                }
-                  /** DRAW DOORS */
-                for(let i = 0; i < model.keyList.length; i++){
-                    if(model.doorList[i].row === r && model.doorList[i].column === c){
-                        let image = new Image();
-                        if(model.doorList[i].color === "red") {
-                            image.src = redDoor;
-                            image.onload = function() {
-                            ctx.drawImage(image,(model.doorList[i].column*100)+4, (model.doorList[i].row*100)+4, 92, 92);
-                            }
-                        } else if(model.doorList[i].color === "green") {
-                            image.src = greenDoor;
-                            image.onload = function() {
-                            ctx.drawImage(image,(model.doorList[i].column*100)+4, (model.doorList[i].row*100)+4, 92, 92);
-                            }
-                        } else if(model.doorList[i].color === "blue") {
-                            image.src = blueDoor;
-                            image.onload = function() {
-                            ctx.drawImage(image,(model.doorList[i].column*100)+4, (model.doorList[i].row*100)+4, 92, 92);
-                            }
-                        } else if(model.doorList[i].color === "yellow") {
-                            image.src = yellowDoor;
-                            image.onload = function() {
-                            ctx.drawImage(image,(model.doorList[i].column*100)+4, (model.doorList[i].row*100)+4, 92, 92);
-                            }
-                        } 
-                    }    
                 }
                 /** DRAW NINJA-SE */
                 if(model.currentKey === 'red') {

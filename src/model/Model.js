@@ -60,21 +60,19 @@ export class Tile {
         return idx >= 0; 
     }
     
-    availableMoves(level, ninjase) {
+    availableMoves(level, doorList, ninjase) {
         let moves = [];
 
         // Can we move left?
         let available = false;
-        let openDoor = false;
         
         
         if(ninjase.column > 0) {
             available = true;
-            for(let i = 0; i < level.doors.length; i++) {
-                let door = level.doors[i];
+            for(let i = 0; i < doorList.length; i++) {
+                let door = doorList[i];
                 if(door.row === ninjase.row && door.column === ninjase.column - 1){
                     available = false;
-                    openDoor = true;
                 }
             }
             for(let i = 0; i < level.walls.length; i++) {
@@ -91,13 +89,12 @@ export class Tile {
 
         // Can we move right?
         available = false;
-        if(ninjase.column < this.numColumns) {
+        if(ninjase.column < this.numColumns-1) {
             available = true;
-            for(let i = 0; i < level.doors.length; i++) {
-                let door = level.doors[i];
+            for(let i = 0; i < doorList.length; i++) {
+                let door = doorList[i];
                 if(door.row === ninjase.row && door.column === ninjase.column + 1){
                     available = false;
-                    openDoor = true;
                 }
             }
             for(let i = 0; i < level.walls.length; i++) {
@@ -115,11 +112,10 @@ export class Tile {
         available = false;
         if(ninjase.row > 0) {
             available = true;
-            for(let i = 0; i < level.doors.length; i++) {
-                let door = level.doors[i];
+            for(let i = 0; i < doorList.length; i++) {
+                let door = doorList[i];
                 if(door.row === ninjase.row - 1 && door.column === ninjase.column){
                     available = false;
-                    openDoor = true;
                 }
             }
             for(let i = 0; i < level.walls.length; i++) {
@@ -137,11 +133,10 @@ export class Tile {
         available = false;
         if(ninjase.row +1 < this.numRows) {
             available = true;
-            for(let i = 0; i < level.doors.length; i++) {
-                let door = level.doors[i];
+            for(let i = 0; i < doorList.length; i++) {
+                let door = doorList[i];
                 if(door.row === ninjase.row + 1 && door.column === ninjase.column){
                     available = false;
-                    openDoor = true;
                 }
             }
             for(let i = 0; i < level.walls.length; i++) {
@@ -154,12 +149,17 @@ export class Tile {
         if(available) {
             moves.push("Down");
         }
+        
+        if(doorList === null){
+            alert("You have completed this level!");
+        }
+
         return moves;
     }
 
-    onKey(level) {
+    onKey(level, keyList) {
         let onAKey = false;
-        level.keys.forEach(key => {
+        keyList.forEach(key => {
             if(level.ninjase.row === key.row &&  level.ninjase.column === key.column){
                 onAKey = true;
             }
@@ -167,9 +167,9 @@ export class Tile {
         return onAKey;
     }
 
-    nearDoor(level, currentKey) {
+    nearDoor(level, doorList, currentKey) {
         let nearDoor = false;
-        level.doors.forEach(door => {
+        doorList.forEach(door => {
             if(door.color === currentKey){
                 if(level.ninjase.row === (door.row+1) &&  level.ninjase.column === door.column){ /** UP */
                     nearDoor = true;
@@ -244,11 +244,13 @@ export class Model {
         this.victory = false;
         this.keyList = [];
         this.doorList = [];
+        this.spareKeys = [];
         this.currentKey = null;
         this.startRow = level.start.row;
         this.startColumn = level.start.column;
         level.keys.forEach(key => {
             this.keyList.push(new Key(key.row, key.column, key.color));
+            this.spareKeys.push(new Key(key.row, key.column, key.color));
         })
         level.doors.forEach(door => {
             this.doorList.push(new Door(door.row, door.column, door.color));
@@ -269,6 +271,7 @@ export class Model {
         m.victory = this.victory;
         m.keyList = this.keyList;
         m.doorList = this.doorList;
+        m.spareKeys = this.spareKeys;
         m.currentKey = this.currentKey;
         m.startRow = this.startRow;
         m.startColumn = this.startColumn;
@@ -276,18 +279,18 @@ export class Model {
     }
 
     available(direction) {
-        let allMoves = this.tile.availableMoves(this.level, this.level.ninjase);
+        let allMoves = this.tile.availableMoves(this.level, this.doorList, this.level.ninjase);
         return allMoves.includes(direction);
     }
 
     availableKey() {
-        let onKey = this.tile.onKey(this.level);
+        let onKey = this.tile.onKey(this.level, this.keyList);
         return onKey;
                 
     }
 
     availableDoor(currentKey) {
-        let nearDoor = this.tile.nearDoor(this.level, this.currentKey);
+        let nearDoor = this.tile.nearDoor(this.level, this.doorList, this.currentKey);
         //console.log("nearDoor: " + nearDoor)
         return nearDoor;
     }

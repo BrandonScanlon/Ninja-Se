@@ -18,7 +18,7 @@ import { moveNinja, resetLevel, pickupKey, unlockDoor } from './controller/Contr
  *    or search for styled-components
  *    in the VS Code plugins. 
  * 
- *  - npm install react-router-dom
+ *  - npm install react-confetti
  * 
  *  - npm start (of course)
  */
@@ -67,7 +67,6 @@ function App() {
   const [redraw, forceRedraw] = React.useState(0);
   const canvasRef = React.useRef(null);
   const appRef = React.useRef(null);
-  
 
   React.useEffect (() => {
 
@@ -117,18 +116,19 @@ function App() {
 
       <label style={specs.title}>{TextLevel()}</label>
       <label style={specs.text}>{"Number of Moves: " + model.numMoves}</label>
+      <label style={specs.reset}>{"Press level again to reset"}</label>
       
       <div style={specs.upButton}>
-      <UpButton onClick={(e) => moveNinjaHandler("Up")} disabled={!model.available("Up")}>    ↑ </UpButton>
+      <UpButton onClick={(e) => moveNinjaHandler("Up")} disabled={!model.available("Up")}>↑</UpButton>
       </div>
       <div style={specs.leftButton}>
-      <LeftButton onClick={(e) => moveNinjaHandler("Left")} disabled={!model.available("Left")}>  ← </LeftButton>
+      <LeftButton onClick={(e) => moveNinjaHandler("Left")} disabled={!model.available("Left")}>←</LeftButton>
       </div>
       <div style={specs.downButton}>
-      <DownButton onClick={(e) => moveNinjaHandler("Down")} disabled={!model.available("Down")}>  ↓ </DownButton>
+      <DownButton onClick={(e) => moveNinjaHandler("Down")} disabled={!model.available("Down")}>↓</DownButton>
       </div>
       <div style={specs.rightButton}>
-      <RightButton onClick={(e) => moveNinjaHandler("Right")} disabled={!model.available("Right")}> → </RightButton>
+      <RightButton onClick={(e) => moveNinjaHandler("Right")} disabled={!model.available("Right")}>→</RightButton>
       </div>
       <div style={specs.l1Button}>
       <L1Button onClick={(e) => LevelHandler(level1)}>Level 1</L1Button>
