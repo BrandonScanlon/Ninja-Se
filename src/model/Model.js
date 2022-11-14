@@ -244,13 +244,11 @@ export class Model {
         this.victory = false;
         this.keyList = [];
         this.doorList = [];
-        this.spareKeys = [];
         this.currentKey = null;
         this.startRow = level.start.row;
         this.startColumn = level.start.column;
         level.keys.forEach(key => {
             this.keyList.push(new Key(key.row, key.column, key.color));
-            this.spareKeys.push(new Key(key.row, key.column, key.color));
         })
         level.doors.forEach(door => {
             this.doorList.push(new Door(door.row, door.column, door.color));
@@ -271,8 +269,8 @@ export class Model {
         m.victory = this.victory;
         m.keyList = this.keyList;
         m.doorList = this.doorList;
-        m.spareKeys = this.spareKeys;
         m.currentKey = this.currentKey;
+        m.tempKey = this.tempKey
         m.startRow = this.startRow;
         m.startColumn = this.startColumn;
         return m;
@@ -291,7 +289,6 @@ export class Model {
 
     availableDoor(currentKey) {
         let nearDoor = this.tile.nearDoor(this.level, this.doorList, this.currentKey);
-        //console.log("nearDoor: " + nearDoor)
         return nearDoor;
     }
 }

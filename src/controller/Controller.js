@@ -1,4 +1,4 @@
-import { Model } from "../model/Model";
+import { Key, Model } from "../model/Model";
 
 export function moveNinja(model, direction) {
     let ninjase = model.level.ninjase;
@@ -23,14 +23,34 @@ export function moveNinja(model, direction) {
 }
 
 export function pickupKey(model) {
-    model.keyList.forEach(key => {
-        if(model.level.ninjase.row === key.row && model.level.ninjase.column === key.column){
-            model.currentKey = key.color;
-            const index = model.keyList.findIndex(key => {
-                return key.color === model.currentKey;
-            })
-            if(index > -1){
-                model.keyList.splice(index, 1);
+    
+
+    model.keyList.forEach(key => { //holds the original list of Key Objects 
+        if(model.level.ninjase.row === key.row && model.level.ninjase.column === key.column){ //Checks if Ninja-se is on a key
+            if(model.currentKey === null){ // if not holding a key
+                model.currentKey = key.color; // "pickup key"
+
+                const index = model.keyList.findIndex(key => { //find index of the key "picked up"
+                    if(model.level.ninjase.row === key.row && model.level.ninjase.column === key.column){
+                        return key.color === model.currentKey;
+                    }
+                })
+                if(index > -1){ //if found
+                    model.keyList.splice(index, 1); //splice, thus delete that key from the keyList (thus no rendering, etc.)
+                }
+            } else{  
+                let tempKey = model.currentKey; // sets to current key if any 
+                model.currentKey = key.color; //switch colors
+                const index = model.keyList.findIndex(key => { //find index of the key "picked up"
+                    if(model.level.ninjase.row === key.row && model.level.ninjase.column === key.column){
+                        return key.color === model.currentKey;
+                    }
+                })
+                if(index > -1){ //if found
+                    let newKey = new Key(model.level.ninjase.row, model.level.ninjase.column, tempKey) //create a newKey at current location and held key (idea is to be the swapped key)
+                    model.keyList.splice(index, 1); // delete picked up key
+                    model.keyList.unshift(newKey); //push the newKey that resembles the "dropped" key in current location
+                }   
             }
         }
     })
